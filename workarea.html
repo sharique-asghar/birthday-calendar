@@ -14,48 +14,19 @@
             <h3>Work Area</h3>
         </header>
 
-        <div class="row card-container">
-            <div class="cal__day card">
-                <div class="card-title"> MON </div>
-                <div class="card-body"></div>
+        <div class="row card-container"></div>
+        <div class="row">
+            <textarea id="textarea_input" class="textarea column left" rows="30" cols="150" onkeyup="textAreaInputChange()" required>
+            </textarea>
+            <div class="column right action">
+                <label for="year">Year</label>
+                <input type="number" id="year" name="year" placeholder="Enter Year.." required>
+                <button id="update" onclick="update()">Update</button>
             </div>
-            <div class="cal__day card">
-                <div class="card-title"> TUE </div>
-                <div class="card-body"></div>
-            </div>
-            <div class="cal__day card">
-                <div class="card-title"> WED </div>
-                <div class="card-body"></div>
-            </div>
-            <div class="cal__day card">
-                <div class="card-title"> THU </div>
-                <div class="card-body"></div>
-            </div>
-            <div class="cal__day card">
-                <div class="card-title"> FRI </div>
-                <div class="card-body"></div>
-            </div>
-            <div class="cal__day card">
-                <div class="card-title"> SAT </div>
-                <div class="card-body"></div>
-            </div>
-            <div class="cal__day card">
-                <div class="card-title"> SUN </div>
-                <div class="card-body"></div>
-            </div>
-        </div>
-        <div class="row-space .input-container">
-            <form class="row" id="form" name="form" onsubmit="update()">
-                <textarea id="textarea_input" class="textarea column left" rows="30" cols="150">
-                </textarea>
-                <div class="column right action">
-                    <label for="year">Year</label>
-                    <input type="number" id="year" name="year" placeholder="Enter Year..">
-                    <button type="submit" id="update">Update</button>
-                </div>
-            </form>
         </div>
     </div>
+
+    <script src="workarea.js"></script>
 </body>
 
 </html>
