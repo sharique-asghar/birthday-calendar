@@ -52,6 +52,7 @@ function init() {
     generateTextAreaValue();
 };
 
+// generate card for each day in a week
 function generateCards() {
     DAYS.forEach(day => {
         let newDiv = document.createElement("div");
@@ -69,10 +70,12 @@ function generateCards() {
     });
 };
 
+
+// create and generate text area value in json form
 function generateTextAreaValue() {
     const parent = document.createElement("pre");
     const tab = document.createElement("pre");
-    tab.innerHTML = "\t"
+    tab.innerHTML = "&#9;"
     parent.innerHTML = "[\n" + tab.innerText;
 
     birthdayList.forEach((personObj, index) => {
@@ -88,13 +91,16 @@ function generateTextAreaValue() {
     textArea.value = parent.innerText;
 };
 
+// on textarea input change handler
 function textAreaInputChange() {
-    let textAreaVal = textArea.value.replace(/\t/g, "").replace(/\n/g, "").replace(/\s/g, "").replace(/name/g, `"name"`)
+    let textAreaVal = [];
+    textAreaVal = textArea.value.replace(/\t/g, "").replace(/\n/g, "").replace(/\s\s+/g, "").replace(/,\s/g, ",").replace(/name/g, `"name"`)
     .replace(/birthday/g, `"birthday"`).replace(/,]$/, "]");
 
     birthdayList = JSON.parse(textAreaVal);
 };
 
+// calculate age of a person on input year
 function calculateAge(dateString) {
     var birthday = new Date(dateString);
     var ageDifMs = Date.now() - birthday.getTime();
@@ -102,6 +108,8 @@ function calculateAge(dateString) {
     return Math.abs(ageDate.getFullYear() - 1970);
 };
 
+
+// get birth day on input year
 function getBirthday(dateString, year) {
     const ALLDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const date = new Date(dateString).getDate();
@@ -110,9 +118,12 @@ function getBirthday(dateString, year) {
     return birthday.substring(0, 3).toUpperCase();
 };
 
+
+// on update button click, update the calendar with new data
 function update() {
     let year = inputYear.value;
-    let birthdayPersonList = birthdayList.map(personObj => {
+    let birthdayPersonList = [];
+    birthdayPersonList = birthdayList.map(personObj => {
         let personInitials = personObj.name.split(' ').map(x => x[0]).join('').toUpperCase();
         let age = calculateAge(personObj.birthday);
         let birthday = getBirthday(personObj.birthday, year);
@@ -125,30 +136,55 @@ function update() {
         birthdayMap.set(day, birthdayListOnThisDay);
     });
     console.log(birthdayMap);
+
+    removeAndCreateCard();
     generateCalendar();
 };
 
+// To remove the card present from earlier render and recreate it
+function removeAndCreateCard() {
+    while (cardContainer.firstChild) cardContainer.removeChild(cardContainer.firstChild);
+
+    generateCards();
+};
+
+// generate calendar having each person as item
 function generateCalendar() {
     for (let [key, list] of birthdayMap) {
         let cardBody = document.querySelector(`[class$='${key}']`);
-        // const cardWidth = cardBody.clientWidth;
-        // const cardHeight = cardBody.clientHeight;
-        // const cardArea = cardWidth * cardHeight;
+        const cardWidth = cardBody.clientWidth;
+        const cardHeight = cardBody.clientHeight;
+        const cardArea = cardWidth * cardHeight;
 
 
         if (list && list.length) {
+            let squareNum = getPerfectSquare(list.length);
             list.forEach(info => {
                 let box = document.createElement("div");
-                // const boxArea = cardArea / list.length;
-                box.setAttribute("style", `background-color: #${Math.floor(Math.random()*16777215).toString(16)};`);
+                const boxArea = cardArea / squareNum;
+                box.setAttribute("style", `background-color: #${Math.floor(Math.random()*16777215).toString(16)};width:${Math.sqrt(boxArea)}px;height:${Math.sqrt(boxArea)}px;`);
                 box.classList.add("day__person")
                 box.innerHTML = info.person;
                 cardBody.innerHTML += box.outerHTML;
             });
         } else {
+            let img = document.createElement("img");
+            img.setAttribute("src", "nothing.png");
             cardBody.classList.add("day--empty");
+            cardBody.appendChild(img);
         }
     }
-}
+};
 
-init();
+// check whether number is perfect square and return that number, if not return next perfect square
+function getPerfectSquare(n) {
+    let sr = Math.sqrt(n)
+    if((sr - Math.floor(sr)) == 0) {
+        return n;
+    } else {
+        let nextN = Math.floor(sr) + 1;
+        return nextN * nextN;
+    }
+};
+
+init(); // initialize the first render

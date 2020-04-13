@@ -58,28 +58,39 @@ header {
 }
 
 .card .card-body {
-    width: 100%;
-    height: auto;
+    width: inherit;
+    height: 200px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
 }
 
+/* Each person box */
 .day__person {
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1rem;
     font-weight: bold;
-    flex: 1 1 auto;
     color: white;
-    height: auto;
 }
 
 .day__person:after {
     content:'';
     display: block;
     padding-top:100%;
+}
+
+/* container for empty card image */
+.day--empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #DCDCDC;
+}
+
+img {
+    width: 50px;
+    height: 50px;
 }
 
 .column {
@@ -119,7 +130,7 @@ input[type=number] {
     background-color: #0074d9;
     border-radius: 3px;
     font-family: inherit;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 700;
     text-transform: uppercase;
     cursor: pointer;
@@ -135,8 +146,6 @@ input[type=number] {
 .action {
     margin-left: 1em;
 }
-
-
 
 /* Responsive layout - makes the columns stack on top of each other instead of next to each other */
 @media (max-width: 600px) {
